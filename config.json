@@ -1,0 +1,41 @@
+{
+	"marketsToTrade": [
+		"ETHUSD",
+		"LTCUSD",
+		"BTCUSD",
+		"TRXUSD"
+	],
+
+	"keys":{
+		"public": "",
+		"private": ""
+	},
+	
+	"indicators": {
+		"ema": {
+			"period": 9
+		},
+
+		"sma": {
+			"period": 9
+		},
+
+		"bb": {
+			"period": 20,
+			"multiplier": 2
+		},
+
+		"rsi":{
+			"period": 14
+		},
+
+		"macd": {
+			"fastLength": 12,
+			"slowLength": 26,
+			"signalLength": 9
+		}
+	},
+
+	"timePeriod": "M5",
+	"restrictor": 0
+}
