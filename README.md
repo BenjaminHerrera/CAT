@@ -7,7 +7,7 @@ Description
 -----------
 
 CAT is a light program that trades cryptocurrencies based on market indicators and behavior.
-For now, CAT can only do a limited number of actions such as deciding whether to enter a market or communicating with its trading platorm.
+For now, CAT can only do a limited number of actions such as deciding whether to enter a market or communicating with its trading platform.
 The only trading platform it can communicate and interact with is with HitBTC ([Link to the Platform](https://HitBTC.com))
 
 Roadmap
