@@ -18,7 +18,7 @@ In the future, I plan to add more features such as more control over the program
 
 Installation
 ------------
-Refer to the program's Wiki for more information
+Refer to the repository's Wiki for more information
 
 License
 -------
