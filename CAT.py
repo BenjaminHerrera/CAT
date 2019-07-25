@@ -3,7 +3,7 @@
 """
 Author: 	  Benjamin Herrera
 Date Created: 24 April 2018
-Date Changed: 22 July 2019
+Date Changed: 25 July 2019
 """
 
 # Imports
@@ -31,6 +31,7 @@ if __name__ == "__main__":
 	# Variables
 	epoch_num = 0
 	error = False
+	opportunity = []
 
 
 	# Checks if HitBTC is reachable
@@ -137,6 +138,10 @@ if __name__ == "__main__":
 	# Calculates values and makes decisions on portfolio
 	while True:
 
+		# Variables
+		print_line = ""
+
+
 		# Clears the console
 		os.system("cls")
  
@@ -146,7 +151,7 @@ if __name__ == "__main__":
 		# Updates timestamp
 		epoch_num += 1
 		timestamp = "[" + strftime("%d %b %Y %H:%M:%S", gmtime()) + "]"
-		print(timestamp + " " +"=" * 12 + "\033[33m EPOCH: " + str(epoch_num) + " \033[0m" + "=" * 12)
+		print(timestamp + " " + "=" * 12 + "\033[33m EPOCH: " + str(epoch_num) + " \033[0m" + "=" * 12)
 
 		# Applies changes from config file to data
 		with open('config.json') as file:
@@ -196,16 +201,72 @@ if __name__ == "__main__":
 				check_list.append(0)
 
 
-			# Checks if the current market iteration is good to buy or sell
+			# Checks if the current market iteration is good to buy
 			# Updates timestamp
 			# Applies restrictor setting
-			# Prints status of the current market at iteration
-			# Buy Status, Sell Status, Description
+			# Concatenate line variable with current status
+			# Appends current market iteration to opportunity list if a buy occurs
 			timestamp = "[" + strftime("%d %b %Y %H:%M:%S", gmtime()) + "]"
-			if all(h == data["restrictor"] for h in check_list):
-				print(timestamp + " " + i + " \033[32m BUY \033[0m")
+			if all(h == data["restrictor"]["buy"] for h in check_list):
+				print_line = timestamp + " " + i + " \033[32m BUY \033[0m"
+				if i not in opportunity:
+					opportunity.append(i)
 			else:
-				print(timestamp + " " + i + " \033[34m WAIT \033[0m")
+				print_line = timestamp + " " + i + " \033[34m WAIT \033[0m"
+
+			
+			# Checks if the current market iteration is in opportunity list
+			# If not, concatenate N\A
+			if i in opportunity:
+
+				# Resets the value of the verfication list
+				check_list = []
+
+
+				# Checks if current close is greater than or equal to the Bollinger Band's upper band
+				# If true, appends a 1 to check_list
+				# If not, appends a 0 to check_list
+				if float(current_close[-1]["close"]) >= bb_indicator.get_lower_band()[-1]:
+					check_list.append(1)
+				else:
+					check_list.append(0)
+
+
+				# Checks if the market's rsi is higher than or equal to 70
+				# If true, appends a 1 to check_list
+				# If not, appends a 0 to check_list
+				if rsi_indicator.get_relative_strength_index()[-1] >= 25:
+					check_list.append(1)
+				else:
+					check_list.append(0)
+
+
+				# Checks if the market is in an downtrend via MACD
+				# If true, appends a 1 to check_list
+				# If not, appends a 0 to check_list
+				if macd_indicator.get_macd()[-1] > macd_indicator.get_sma_of_signal()[-1]:
+					check_list.append(1)
+				else:
+					check_list.append(0)
+
+
+				# Checks if the current market iteration is good to sell
+				# Applies restrictor setting
+				# Concatenate line variable with current status
+				# Remove current market iteration to opportunity list if a sell occurs
+				if all(h == data["restrictor"]["sell"] for h in check_list):
+					print_line += "\031[32m SELL \031[0m"
+					if i in opportunity:
+						opportunity.remove(i)
+				else:
+					print_line += "\033[34m WAIT \033[0m"
+
+			else:
+				print_line += " N\\A "
+
+
+			# Prints status of market 
+			print(print_line)
 
 		# Waits for 5 seconds
 		time.sleep(5)

@@ -3,12 +3,19 @@
 		"ETHUSD",
 		"LTCUSD",
 		"BTCUSD",
-		"TRXUSD"
+		"TRXUSD",
+		"EOSUSD",
+		"BCHUSD",
+		"ETCUSD",
+		"XLMUSD",
+		"ZECUSD",
+		"NEOUSD",
+		"XMRUSD"
 	],
 
 	"keys":{
-		"public": "",
-		"private": ""
+		"public": " PLACE PUBLIC API KEY HERE! ",
+		"private": " PLACE PRIVATW API KEY HERE! "
 	},
 	
 	"indicators": {
@@ -36,6 +43,10 @@
 		}
 	},
 
-	"timePeriod": "M5",
-	"restrictor": 0
+	"restrictor":{
+		"buy": 1,
+		"sell": 1
+	},
+
+	"timePeriod": "M15"
 }
