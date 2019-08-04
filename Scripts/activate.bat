@@ -9,7 +9,7 @@ if defined _OLD_VIRTUAL_PROMPT (
     )
     set "_OLD_VIRTUAL_PROMPT=%PROMPT%"
 )
-set "PROMPT=(CAT v0.1.0) %PROMPT%"
+set "PROMPT=(CAT v0.3.0) %PROMPT%"
 
 REM Don't use () to avoid problems with them in %PATH%
 if defined _OLD_VIRTUAL_PYTHONHOME goto ENDIFVHOME

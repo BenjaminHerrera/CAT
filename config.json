@@ -15,7 +15,7 @@
 
 	"keys":{
 		"public": " PLACE PUBLIC API KEY HERE! ",
-		"private": " PLACE PRIVATW API KEY HERE! "
+		"private": " PLACE PRIVATE API KEY HERE! "
 	},
 	
 	"indicators": {
