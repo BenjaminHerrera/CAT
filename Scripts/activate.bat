@@ -1,30 +1,45 @@
 @echo off
-set "VIRTUAL_ENV=C:\Users\BenHe\Desktop\CAT"
+
+rem This file is UTF-8 encoded, so we need to update the current code page while executing it
+for /f "tokens=2 delims=:." %%a in ('"%SystemRoot%\System32\chcp.com"') do (
+    set "_OLD_CODEPAGE=%%a"
+)
+if defined _OLD_CODEPAGE (
+    "%SystemRoot%\System32\chcp.com" 65001 > nul
+)
+
+set "VIRTUAL_ENV=C:\Users\BenHe\OneDrive - Maricopa Community College District\CAT"
+
+if not defined PROMPT (
+    set "PROMPT=$P$G"
+)
 
 if defined _OLD_VIRTUAL_PROMPT (
     set "PROMPT=%_OLD_VIRTUAL_PROMPT%"
-) else (
-    if not defined PROMPT (
-        set "PROMPT=$P$G"
-    )
-    set "_OLD_VIRTUAL_PROMPT=%PROMPT%"
 )
-set "PROMPT=(CAT v0.3.0) %PROMPT%"
 
-REM Don't use () to avoid problems with them in %PATH%
-if defined _OLD_VIRTUAL_PYTHONHOME goto ENDIFVHOME
+if defined _OLD_VIRTUAL_PYTHONHOME (
+    set "PYTHONHOME=%_OLD_VIRTUAL_PYTHONHOME%"
+)
+
+set "_OLD_VIRTUAL_PROMPT=%PROMPT%"
+set "PROMPT=(CAT) %PROMPT%"
+
+if defined PYTHONHOME (
     set "_OLD_VIRTUAL_PYTHONHOME=%PYTHONHOME%"
-:ENDIFVHOME
+    set PYTHONHOME=
+)
 
-set PYTHONHOME=
-
-REM if defined _OLD_VIRTUAL_PATH (
-if not defined _OLD_VIRTUAL_PATH goto ENDIFVPATH1
+if defined _OLD_VIRTUAL_PATH (
     set "PATH=%_OLD_VIRTUAL_PATH%"
-:ENDIFVPATH1
-REM ) else (
-if defined _OLD_VIRTUAL_PATH goto ENDIFVPATH2
+) else (
     set "_OLD_VIRTUAL_PATH=%PATH%"
-:ENDIFVPATH2
+)
 
 set "PATH=%VIRTUAL_ENV%\Scripts;%PATH%"
+
+:END
+if defined _OLD_CODEPAGE (
+    "%SystemRoot%\System32\chcp.com" %_OLD_CODEPAGE% > nul
+    set "_OLD_CODEPAGE="
+)
