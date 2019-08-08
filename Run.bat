@@ -1,4 +1,4 @@
-:: DO NOT EDIT
+:: DO NOT EDIT!
 
 @echo off
 cd Scripts
