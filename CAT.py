@@ -3,7 +3,7 @@
 """
 Author: 	  Benjamin Herrera
 Date Created: 24 April 2018
-Date Changed: 25 July 2019
+Date Changed: 13 Augst 2019
 """
 
 # Imports
@@ -51,6 +51,7 @@ if __name__ == "__main__":
 			print(timestamp + "\033[31m Check internet connection \033[0m")
 			print(timestamp + " Exiting")
 			error = True
+
 
 	# Checks if an error occured
 	# If so, exit the script
@@ -106,28 +107,18 @@ if __name__ == "__main__":
 		exit()
 
 
+	# Make connection to HitBTC's API
 	# Creates instances of the indicators
 	# EMA, SMA, BB, RSI, MACD
-	# Displays what settings are being applied
+	# Prints message
+	api = hitbtc.HitBTC(data["keys"]["public"], data["keys"]["private"])
 	timestamp = "[" + strftime("%d %b %Y %H:%M:%S", gmtime()) + "]"
 	bb_indicator = bb.BollingerBand(data["indicators"]["bb"]["period"], data["indicators"]["bb"]["multiplier"], None)
-	print(timestamp + " Applying Bollinger Band settings")
-	print(timestamp + " Using Period setting as " + str(data["indicators"]["bb"]["period"]))
-	print(timestamp + " Using multiplier setting as " + str(data["indicators"]["bb"]["multiplier"]))
 	sma_indicator = sma.SimpleMovingAverage(data["indicators"]["sma"]["period"], None)
-	print(timestamp + " Applying Simple Moving Average settings")
-	print(timestamp + " Using Period setting as " + str(data["indicators"]["sma"]["period"]))
 	ema_indicator = ema.ExponentialMovingAverage(data["indicators"]["ema"]["period"], None)
-	print(timestamp + " Applying Exponentional Moving Average settings")
-	print(timestamp + " Using Period setting as " + str(data["indicators"]["ema"]["period"]))
 	rsi_indicator = rsi.RelativeStrengthIndex(data["indicators"]["rsi"]["period"], None)
-	print(timestamp + " Applying Relative Strength Index settings")
-	print(timestamp + " Using Period setting as " + str(data["indicators"]["rsi"]["period"]))
 	macd_indicator = macd.MovingAverageConvergenceDivergence(data["indicators"]["macd"]["fastLength"], data["indicators"]["macd"]["slowLength"], data["indicators"]["macd"]["signalLength"], None)
-	print(timestamp + " Applying Moving Average Convergenc Divergence settings")
-	print(timestamp + " Using Fast Length setting as " + str(data["indicators"]["macd"]["fastLength"]))
-	print(timestamp + " Using Slow Length setting as " + str(data["indicators"]["macd"]["slowLength"]))
-	print(timestamp + " Using Signal Length setting as " + str(data["indicators"]["macd"]["signalLength"]))
+	print(timestamp + " Apllying indicator settings")
 
 	# Waits 7 seconds
 	time.sleep(7)
@@ -177,7 +168,7 @@ if __name__ == "__main__":
 			# Checks if current close is less than or equal to the Bollinger Band's lower band
 			# If true, appends a 1 to check_list
 			# If not, appends a 0 to check_list
-			if float(current_close[-1]["close"]) <= bb_indicator.get_lower_band()[-1]:
+			if data["indicators"]["bb"]["isEnabled"]["buy"] == 1 and float(current_close[:epoch_num+100][-1]) <= bb_indicator.get_lower_band()[-1]:
 				check_list.append(1)
 			else:
 				check_list.append(0)
@@ -186,7 +177,7 @@ if __name__ == "__main__":
 			# Checks if the market's rsi is lower than 25
 			# If true, appends a 1 to check_list
 			# If not, appends a 0 to check_list
-			if rsi_indicator.get_relative_strength_index()[-1] <= 25:
+			if data["indicators"]["rsi"]["isEnabled"]["buy"] == 1 and rsi_indicator.get_relative_strength_index()[-1] <= data["indicators"]["rsi"]["settings"]["lowerTrigger"]:
 				check_list.append(1)
 			else:
 				check_list.append(0)
@@ -195,7 +186,7 @@ if __name__ == "__main__":
 			# Checks if the market is in an uptrend via MACD
 			# If true, appends a 1 to check_list
 			# If not, appends a 0 to check_list
-			if macd_indicator.get_macd()[-1] < macd_indicator.get_sma_of_signal()[-1]:
+			if data["indicators"]["macd"]["isEnabled"]["buy"] == 1 and macd_indicator.get_macd()[-1] < macd_indicator.get_sma_of_signal()[-1]:
 				check_list.append(1)
 			else:
 				check_list.append(0)
@@ -207,7 +198,7 @@ if __name__ == "__main__":
 			# Concatenate line variable with current status
 			# Appends current market iteration to opportunity list if a buy occurs
 			timestamp = "[" + strftime("%d %b %Y %H:%M:%S", gmtime()) + "]"
-			if all(h == data["restrictor"]["buy"] for h in check_list):
+			if check_list.count(1) >= data["restrictor"]["buy"]:
 				print_line = timestamp + " " + i + " \033[32m BUY \033[0m"
 				if i not in opportunity:
 					opportunity.append(i)
@@ -226,7 +217,7 @@ if __name__ == "__main__":
 				# Checks if current close is greater than or equal to the Bollinger Band's upper band
 				# If true, appends a 1 to check_list
 				# If not, appends a 0 to check_list
-				if float(current_close[-1]["close"]) >= bb_indicator.get_lower_band()[-1]:
+				if data["indicators"]["bb"]["isEnabled"]["sell"] == 1 and float(current_close[:epoch_num+100][-1]) >= bb_indicator.get_lower_band()[-1]:
 					check_list.append(1)
 				else:
 					check_list.append(0)
@@ -235,7 +226,7 @@ if __name__ == "__main__":
 				# Checks if the market's rsi is higher than or equal to 70
 				# If true, appends a 1 to check_list
 				# If not, appends a 0 to check_list
-				if rsi_indicator.get_relative_strength_index()[-1] >= 25:
+				if data["indicators"]["rsi"]["isEnabled"]["sell"] == 1 and rsi_indicator.get_relative_strength_index()[-1] >= data["indicators"]["rsi"]["settings"]["upperTrigger"]:
 					check_list.append(1)
 				else:
 					check_list.append(0)
@@ -244,7 +235,7 @@ if __name__ == "__main__":
 				# Checks if the market is in an downtrend via MACD
 				# If true, appends a 1 to check_list
 				# If not, appends a 0 to check_list
-				if macd_indicator.get_macd()[-1] > macd_indicator.get_sma_of_signal()[-1]:
+				if data["indicators"]["macd"]["isEnabled"]["sell"] == 1 and macd_indicator.get_macd()[-1] > macd_indicator.get_sma_of_signal()[-1]:
 					check_list.append(1)
 				else:
 					check_list.append(0)
@@ -254,7 +245,7 @@ if __name__ == "__main__":
 				# Applies restrictor setting
 				# Concatenate line variable with current status
 				# Remove current market iteration to opportunity list if a sell occurs
-				if all(h == data["restrictor"]["sell"] for h in check_list):
+				if check_list.count(1) >= data["restrictor"]["sell"]:
 					print_line += "\031[32m SELL \031[0m"
 					if i in opportunity:
 						opportunity.remove(i)
@@ -262,7 +253,7 @@ if __name__ == "__main__":
 					print_line += "\033[34m WAIT \033[0m"
 
 			else:
-				print_line += " N\\A "
+				print_line += " N\\A"
 
 
 			# Prints status of market 

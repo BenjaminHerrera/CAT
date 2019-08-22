@@ -5,7 +5,7 @@ macd.py
 
 Author:        Benjamin Joseph Lucero Herrera
 Date Created:  26 April 2018
-Last Modified: 24 March 2019
+Last Modified: 12 August 2019
 """
 
 # Import

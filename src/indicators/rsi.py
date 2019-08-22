@@ -5,7 +5,7 @@ rsi.py
 
 Author:        Benjamin Herrera
 Date Created:  10 May 2018
-Last Modified: 24 March 2019
+Last Modified: 14 August 2019
 """
 
 # Class of RelativeStrengthIndex
@@ -46,7 +46,10 @@ class RelativeStrengthIndex(object):
         # Iterates through data_values to fond closed values
         for value in self.data_set:
             # Appends closed values to closed_values
-            closed_values.append(value['close'])
+            if type(self.data_set) == dict or type(self.data_set[0]) == dict:
+                closed_values.append(value['close'])
+            else:
+                closed_values.append(value)
 
         # Iterates through close_values and compares close values to see if there's a loss or not
         for i in range(len(closed_values) - 1):

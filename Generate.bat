@@ -3,7 +3,7 @@ cd Scripts
 call activate.bat
 cd ../
 
-python DSG.py test BTCUSD M15 
+python DSG.py test_BTCUSD_M30_1000 BTCUSD M30 1000
 
 :: =========================
 :: HOW TO MAKE A DATA SET

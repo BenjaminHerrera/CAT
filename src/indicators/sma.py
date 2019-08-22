@@ -5,7 +5,7 @@ sma.py
 
 Author:        Benjamin Joseph Lucero Herrera
 Date Created:  18 May 2018
-Last Modified: 26 March 2019
+Last Modified: 14 August 2019
 """
 
 # Class of SimpleMovingAverage
@@ -43,12 +43,16 @@ class SimpleMovingAverage(object):
         closed_values = []
         list_of_sma_values = []
 
+
         # Tries to parse data_set
         try:
             # Iterates through data_values to fond closed values
             for value in self.data_set:
                 # Appends closed values to closed_values
-                closed_values.append(value["close"])
+                if type(self.data_set) == dict or type(self.data_set[0]) == dict:
+                    closed_values.append(value["close"])
+                else:
+                    closed_values.append(value)
 
         # If an error is found, the function will pass the value from data_set to closed_values
         except TypeError:

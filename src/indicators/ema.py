@@ -56,8 +56,11 @@ class ExponentialMovingAverage(object):
 
         
         for value in self.data_set:
-            # Appends closed values to closed_values
-            closed_values.append(value["close"])
+            # Appends closed values to closed_values    
+            if type(self.data_set) == dict or type(self.data_set[0]) == dict:
+                closed_values.append(value["close"])
+            else:
+                closed_values.append(value)
 
         # Calculates the first ExponentialMovingAverage value
         EMA_value = sma_01.get_sma()[0]

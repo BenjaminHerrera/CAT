@@ -5,7 +5,7 @@ bb.py
 
 Author:        Benjamin Herrera
 Date Created:  20 May 2018
-Last Modified: 26 March 2019
+Last Modified: 14 August 2019
 """
 
 # Imports
@@ -66,7 +66,10 @@ class BollingerBand(object):
         # Iterates through data_values to fond closed values
         for value in self.data_set:
             # Appends closed values to closed_values
-            closed_values.append(value['close'])
+            if type(self.data_set) == dict:
+                closed_values.append(value['close'])
+            else:
+                 closed_values.append(value)
 
         # Iterates through the SimpleMovingAverage
         for i in range(len(closed_values) - self.period + 1):
@@ -117,7 +120,10 @@ class BollingerBand(object):
         # Iterates through data_values to fond closed values
         for value in self.data_set:
             # Appends closed values to closed_values
-            closed_values.append(value['close'])
+            if type(self.data_set) == dict or type(self.data_set[0]) == dict:
+                closed_values.append(value['close'])
+            else:
+                closed_values.append(value)
 
         # Iterates through the SimpleMovingAverage
         for i in range(len(closed_values) - self.period + 1):
