@@ -5,7 +5,7 @@ HitBTC.py
 
 Author:        Benjamin Herrera
 Date Created:  24 April 2018
-Last Modified: 21 March 2019
+Last Modified: 23 August 2019
 """
 
 # Import
@@ -223,20 +223,21 @@ class HitBTC(object):
         return self.session.get("%s/order/%s"
                                 % (self.url, client_order_id)).json()
 
-    def put_order(self, client_order_id, symbol, side, quantity, price):
+    def put_order(self, client_order_id, symbol, side, type_order, quantity="10", price="0.0001"):
         """
         Creates an order to buy or sell currency
         /order/{clientOrderID}
 
         :param client_order_id: String, order ID
         :param symbol: String, market in which layouts wishes to enter or exit
-        :param side: String, either sell or buy
+        :param side: String, either sell or bu
+        :param type_order: String, the type of buying or selling
         :param quantity: String, amount to buy
         :param price: String, specified value in which what price to enter or exit
         :return: JSON Text detailing details about the order
         """
         # Local Variable
-        data = {'symbol': symbol, 'side': side, 'quantity': quantity, 'price': price}
+        data = {'symbol': symbol, 'side': side, 'type': type_order, 'quantity': quantity, 'price': price}
 
         # Returns or places an order
         return self.session.put("%s/order/%s"
