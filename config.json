@@ -1,0 +1,76 @@
+{
+	"marketsToTrade": [
+		"ETHUSD",
+		"LTCUSD",
+		"BTCUSD",
+		"TRXUSD",
+		"EOSUSD",
+		"BCHUSD",
+		"ETCUSD",
+		"XLMUSD",
+		"ZECUSD",
+		"NEOUSD",
+		"XMRUSD"
+	],
+
+	"keys":{
+		"public": " PLACE API KEY HERE! ",
+		"private": " PLACE API KEY HERE! "
+	},
+	
+	"indicators": {
+		"ema": {
+			"period": 9,
+			"isEnabled":{
+				"buy": 0,
+				"sell": 0
+			}
+		},
+
+		"sma": {
+			"period": 9,
+			"isEnabled":{
+				"buy": 0,
+				"sell": 0
+			}
+		},
+
+		"bb": {
+			"period": 20,
+			"multiplier": 2,
+			"isEnabled":{
+				"buy": 0,
+				"sell": 0
+			}
+		},
+
+		"rsi":{
+			"period": 14,
+			"settings":{
+				"upperTrigger": 70,
+				"lowerTrigger": 30
+			},
+			"isEnabled":{
+				"buy": 1,
+				"sell": 1
+			}
+		},
+
+		"macd": {
+			"fastLength": 12,
+			"slowLength": 26,
+			"signalLength": 9,
+			"isEnabled":{
+				"buy": 0,
+				"sell": 0
+			}
+		}
+	},
+
+	"restrictor":{
+		"buy": 1,
+		"sell": 1
+	},
+
+	"timePeriod": "M15"
+}
